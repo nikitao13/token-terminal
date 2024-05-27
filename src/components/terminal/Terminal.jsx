@@ -1,4 +1,5 @@
 import TokenDataTable from "./TokenDataTable";
+import fetchTokenData from "../../utils/fetchTokenData";
 import Nav from "./Nav";
 
 function Terminal() {
@@ -9,7 +10,7 @@ function Terminal() {
     return (
         <section className={terminalStyles.container}>
             <Nav /> 
-            <TokenDataTable />
+            <TokenDataTable fetchTokenData={fetchTokenData}/>
         </section>
     )
 }
