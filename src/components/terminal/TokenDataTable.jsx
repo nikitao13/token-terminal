@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import formatMarketCap from "../../utils/formatMarketCap";
 import TokenDataLoading from "./TokenDataLoading";
@@ -7,11 +7,12 @@ function TokenDataTable({ fetchTokenData }) {
     const [tokenData, setTokenData] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const addresses = [
-        "4GJ3TCt5mTgQT5BRKb14AkjddpFQqKVfphxzS3t4foZ9",
+    const addresses = useMemo(() => [
         "26KMQVgDUoB6rEfnJ51yAABWWJND8uMtpnQgsHQ64Udr",
         "2GZcmRHmKFWPqkJ9Wm1XAf5kLwFxcYG5cTiTGkH4VZht",
-    ];
+        "0xaaeE1A9723aaDB7afA2810263653A34bA2C21C7a",
+        "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
+    ], []);
 
     useEffect(() => {
         let intervalId;
@@ -32,20 +33,20 @@ function TokenDataTable({ fetchTokenData }) {
         intervalId = setInterval(fetchData, 60000);
 
         return () => clearInterval(intervalId); 
-    }, [fetchTokenData]);
+    }, [fetchTokenData, addresses]);
 
     const tableStyles = {
         container: "text-green-500 flex flex-row px-1 py-1 border mt-2 border-green-900 w-max bg-green-900/5",
         th: "px-4 py-1.5 font-medium text-green-500 uppercase tracking-wider",
         td: "px-4 py-3.5 whitespace-nowrap transition-color duration-600",
         row: "text-md font-light hover:opacity-75 transition-all duration-300",
-        purple: "text-purple-500"
+        purple: "text-purple-600"
     }
     
     const { container, th, td, row, purple } = tableStyles;
 
     if (loading) {
-        return <TokenDataLoading tokenData={tokenData} />;
+        return <TokenDataLoading />;
     }
 
     return (

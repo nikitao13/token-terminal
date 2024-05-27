@@ -9,13 +9,7 @@ function TokenDataLoading() {
     
     const { container, th, td, row, purple } = tableStyles;
 
-    const dummyData = [
-        { changeDay: 100 },
-        { changeDay: 100 },
-        { changeDay: 100 },
-        { changeDay: 100 },
-        { changeDay: 100 },
-    ];
+    const dummyData = ["1", "2", "3"];
 
     return (
         <div className={container}>
@@ -34,7 +28,7 @@ function TokenDataLoading() {
                     {dummyData.map((token, index) => (
                         <tr key={index} className={row}>
                             <td className={`${td} hover:cursor-pointer`}>
-                                <span className={purple}>(</span><a>{`$TICKER${index}`}</a><span className={purple}>)</span>
+                                <span className={purple}>(</span><a>{`$TICKER${index + 1}`}</a><span className={purple}>)</span>
                             </td>
                             <td className={td}>$0.24</td>
                             <td className={td}>69.3M</td>

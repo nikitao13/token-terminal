@@ -23,15 +23,16 @@ function extractFormattedData(data) {
     return null;
 }
 
+const formatPercentage = value => value >= 1000 ? (value / 1000).toFixed(1) + "K": parseFloat(value).toFixed(2);
 
 const formatData = (chainId, address, tokenName, priceUSD, fdv, symbol, changeFive, changeHour, changeDay) => ({
     chainId: chainId,
     address: address,
     name: tokenName,
-    price: parseFloat(parseFloat(priceUSD).toFixed(10)),
+    price: parseFloat(parseFloat(priceUSD).toFixed(8)),
     fdv: fdv,
     symbol: symbol,
-    changeFive: parseFloat(parseFloat(changeFive).toFixed(2)),
-    changeHour: parseFloat(parseFloat(changeHour).toFixed(2)),
-    changeDay: parseFloat(parseFloat(changeDay).toFixed(2))
+    changeFive: formatPercentage(changeFive),
+    changeHour: formatPercentage(changeHour),
+    changeDay: formatPercentage(changeDay)
 });
