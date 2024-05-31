@@ -28,7 +28,7 @@ function Terminal() {
     }, []);
 
     const handleFormSubmit = async (e) => {
-        handleSubmit(e, action, handleAdd, handleRemove, setActive, fetchTokenData);
+        handleSubmit(e, action, handleAdd, handleRemove, setActive, fetchTokenData, tokens);
     }
     
     const handleSort = () => {
