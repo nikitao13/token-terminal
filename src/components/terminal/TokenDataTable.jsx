@@ -1,18 +1,11 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import formatMarketCap from "../../utils/formatMarketCap";
 import TokenDataLoading from "./TokenDataLoading";
 
-function TokenDataTable({ fetchTokenData }) {
+function TokenDataTable({ fetchTokenData, addresses }) {
     const [tokenData, setTokenData] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    const addresses = useMemo(() => [
-        "26KMQVgDUoB6rEfnJ51yAABWWJND8uMtpnQgsHQ64Udr",
-        "2GZcmRHmKFWPqkJ9Wm1XAf5kLwFxcYG5cTiTGkH4VZht",
-        "0xaaeE1A9723aaDB7afA2810263653A34bA2C21C7a",
-        "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
-    ], []);
 
     useEffect(() => {
         let intervalId;
@@ -97,6 +90,7 @@ function TokenDataTable({ fetchTokenData }) {
 
 TokenDataTable.propTypes = {
     fetchTokenData: PropTypes.func.isRequired,
+    addresses: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 

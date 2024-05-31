@@ -18,8 +18,8 @@ function Nav({ toggleSearch }) {
 
     return (
         <nav className={container}>
-            <a onClick={toggleSearch} className={`${align} ${icons} ${effects} ${scale}`}><MdAddCircleOutline /></a>
-            <a className={`${align} ${icons} ${effects} ${scale} mb-2`}><MdOutlineCancel /></a>
+            <a onClick={() => toggleSearch("add")} className={`${align} ${icons} ${effects} ${scale}`}><MdAddCircleOutline /></a>
+            <a onClick={() => toggleSearch("remove")} className={`${align} ${icons} ${effects} ${scale} mb-2`}><MdOutlineCancel /></a>
             <a href={url} target="_blank" rel="noopener noreferrer" className={`${align} ${effects} ${text} text-purple-600`}>new</a>
             <a className={`${align} ${effects} ${text} mb-0.5`}>sort</a>
             <a className={`${align} ${icons} ${effects} ${scale} ${heart}`}><IoHeartOutline /></a>
