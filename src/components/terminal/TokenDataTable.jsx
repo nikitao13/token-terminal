@@ -29,7 +29,7 @@ function TokenDataTable({ fetchTokenData, addresses }) {
     }, [fetchTokenData, addresses]);
 
     const tableStyles = {
-        container: "text-green-500 flex flex-row px-1 py-1 border mt-2 border-green-900 w-max bg-green-900/5",
+        container: "text-green-500 flex flex-row px-1 py-1 border mt-2 border-green-900 bg-green-900/5 resize-x overflow-auto max-w-[970px] min-w-[575px]",
         th: "px-4 py-1.5 font-medium text-green-500 uppercase tracking-wider",
         td: "px-4 py-3.5 whitespace-nowrap transition-color duration-600",
         row: "text-md font-light hover:opacity-75 transition-all duration-300",

@@ -2,6 +2,8 @@ import TokenDataTable from "./TokenDataTable";
 import fetchTokenData from "../../utils/fetchTokenData";
 import Nav from "./Nav";
 import { useState, useCallback } from 'react';
+import { toggleSearch, handleAddAddress, handleRemoveAddress, handleSubmit } from '../../utils/formHandling';
+
 
 function Terminal() {
     const terminalStyles = {
@@ -20,56 +22,35 @@ function Terminal() {
         "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
     ]);
 
-    const toggleSearch = (newAction) => {
-        if (action === newAction) {
-            setActive(!active);
-        } else {
-            setAction(newAction);
-            setActive(true);
-        }
+    const handleToggleSearch = (newAction) => {
+        toggleSearch(action, newAction, setActive, setAction);
     }
 
-    const handleAddAddress = useCallback((newAddress) => {
-        setAddresses(prevAddresses => {
-            if (!prevAddresses.includes(newAddress)) {
-                return [...prevAddresses, newAddress];
-            }
-            return prevAddresses;
-        });
+    const handleAdd = useCallback((newAddress) => {
+        handleAddAddress(newAddress, setAddresses);
     }, []);
 
-    const handleRemoveAddress = useCallback((addressToRemove) => {
-        setAddresses(prevAddresses => prevAddresses.filter(address => address !== addressToRemove));
+    const handleRemove = useCallback((addressToRemove) => {
+        handleRemoveAddress(addressToRemove, setAddresses);
     }, []);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const address = formData.get('address');
-        if (address) {
-            if (action === "add") {
-                handleAddAddress(address);
-            } else if (action === "remove") {
-                handleRemoveAddress(address);
-            }
-            e.target.reset();
-            setActive(false);
-        }
+    const handleFormSubmit = (e) => {
+        handleSubmit(e, action, handleAdd, handleRemove, setActive);
     }
     
     return (
         <div className="subpixel-antialiased w-full">
             
             <section className={terminalStyles.container}>
-                <Nav toggleSearch={toggleSearch}/> 
+                <Nav toggleSearch={handleToggleSearch}/> 
                 <TokenDataTable fetchTokenData={fetchTokenData} addresses={addresses}/>
             </section>
             {active ? (
                 <div className={terminalStyles.searchWrapper}>
                     <span className="pl-2 mt-1.5 text-purple-600 flex flex-col justify-center text-sm">{">"}</span>
-                    <form onSubmit={handleSubmit} className="w-[575px]">
-                        <input placeholder="enter contract address" type="text" autoFocus className={terminalStyles.search} maxLength={66} spellCheck={false} autoComplete="off" name="address"></input>
-                        <button type="submit" style={{ display: 'none' }}>Submit</button>
+                    <form onSubmit={handleFormSubmit} className="w-[575px]">
+                    <input placeholder="enter contract address" type="text" autoFocus className={terminalStyles.search} maxLength={66} spellCheck={false} autoComplete="off" name="address"></input>
+                    <button type="submit" style={{ display: 'none' }}>Submit</button>
                     </form>
                 </div>
             ) : null}
