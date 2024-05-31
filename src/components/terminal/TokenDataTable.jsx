@@ -1,17 +1,31 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import formatMarketCap from "../../utils/formatMarketCap";
 import TokenDataLoading from "./TokenDataLoading";
+import { TokenContext } from "../../TokenContext"
+import fetchTokenData from "../../utils/fetchTokenData";
 
-function TokenDataTable({ tokens }) {
+function TokenDataTable() {
+    const { tokens, setTokens } = useContext(TokenContext);
     const [tokenData, setTokenData] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const updateTokenData = useCallback(async () => {
+        if (tokens.length > 0) {
+            const addresses = tokens.map(token => token.address);
+            const updatedData = await fetchTokenData(addresses);
+            setTokenData(updatedData);
+            setTokens(updatedData);
+        }
+    }, [tokens, setTokens]);
 
     useEffect(() => {
         setTokenData(tokens);
         setLoading(false);
-    }, [tokens]);
 
+        const intervalId = setInterval(updateTokenData, 60000);
+
+        return () => clearInterval(intervalId);
+    }, [tokens, updateTokenData]);
 
     const tableStyles = {
         container: "text-green-500 flex flex-row px-1 py-1 border mt-2 border-green-900 bg-green-900/5 resize-x overflow-auto max-w-[970px] min-w-[575px] min-h-[185px]",
@@ -44,7 +58,9 @@ function TokenDataTable({ tokens }) {
                     {tokenData.map((token, index) => (
                         <tr key={index} className={row}>
                             <td className={`${td} hover:cursor-pointer`}><span className={purple}>(</span>
-                            <a href={`https://dexscreener.com/${token.chainId}/${token.address}`} target="_blank" rel="noopener noreferrer">{token.symbol.startsWith("$") ? "!" : "$"}{token.symbol.toUpperCase()}</a>
+                            <a href={`https://dexscreener.com/${token.chainId || ''}/${token.address || ''}`} target="_blank" rel="noopener noreferrer">
+                                    {token.symbol?.startsWith("$") ? "!" : "$"}{token.symbol?.toUpperCase() || 'N/A'}  
+                            </a>                          
                             <span className={purple}>)</span></td>
                             <td className={td}>${token.price}</td>
                             <td className={td}>{formatMarketCap(token.fdv)}</td>
@@ -64,9 +80,5 @@ function TokenDataTable({ tokens }) {
         </div>
     )
 }
-
-TokenDataTable.propTypes = {
-    tokens: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
 
 export default TokenDataTable;

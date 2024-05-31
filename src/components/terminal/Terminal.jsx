@@ -41,7 +41,7 @@ function Terminal() {
         <div className="subpixel-antialiased w-full">
             <section className={terminalStyles.container}>
                 <Nav toggleSearch={handleToggleSearch} handleSort={handleSort}/> 
-                <TokenDataTable tokens={tokens}/>
+                <TokenDataTable/>
             </section>
             {active ? (
                 <div className={terminalStyles.searchWrapper}>
