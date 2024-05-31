@@ -2,8 +2,7 @@ import TokenDataTable from "./TokenDataTable";
 import fetchTokenData from "../../utils/fetchTokenData";
 import Nav from "./Nav";
 import { useState, useCallback } from 'react';
-import { toggleSearch, handleAddAddress, handleRemoveAddress, handleSubmit } from '../../utils/formHandling';
-
+import { toggleSearch, handleAddToken, handleRemoveToken, handleSubmit } from '../../utils/formHandling';
 
 function Terminal() {
     const terminalStyles = {
@@ -14,43 +13,36 @@ function Terminal() {
 
     const [active, setActive] = useState(false);
     const [action, setAction] = useState("add");
-
-    const [addresses, setAddresses] = useState([
-        "26KMQVgDUoB6rEfnJ51yAABWWJND8uMtpnQgsHQ64Udr",
-        "2GZcmRHmKFWPqkJ9Wm1XAf5kLwFxcYG5cTiTGkH4VZht",
-        "0xaaeE1A9723aaDB7afA2810263653A34bA2C21C7a",
-        "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
-    ]);
+    const [tokens, setTokens] = useState([]);
 
     const handleToggleSearch = (newAction) => {
         toggleSearch(action, newAction, setActive, setAction);
     }
 
-    const handleAdd = useCallback((newAddress) => {
-        handleAddAddress(newAddress, setAddresses);
+    const handleAdd = useCallback((newToken) => {
+        handleAddToken(newToken, setTokens);
     }, []);
 
-    const handleRemove = useCallback((addressToRemove) => {
-        handleRemoveAddress(addressToRemove, setAddresses);
+    const handleRemove = useCallback((tokenToRemove) => {
+        handleRemoveToken(tokenToRemove, setTokens);
     }, []);
 
-    const handleFormSubmit = (e) => {
-        handleSubmit(e, action, handleAdd, handleRemove, setActive);
+    const handleFormSubmit = async (e) => {
+        handleSubmit(e, action, handleAdd, handleRemove, setActive, fetchTokenData);
     }
     
     return (
         <div className="subpixel-antialiased w-full">
-            
             <section className={terminalStyles.container}>
                 <Nav toggleSearch={handleToggleSearch}/> 
-                <TokenDataTable fetchTokenData={fetchTokenData} addresses={addresses}/>
+                <TokenDataTable tokens={tokens}/>
             </section>
             {active ? (
                 <div className={terminalStyles.searchWrapper}>
                     <span className="pl-2 mt-1.5 text-purple-600 flex flex-col justify-center text-sm">{">"}</span>
                     <form onSubmit={handleFormSubmit} className="w-[575px]">
-                    <input placeholder="enter contract address" type="text" autoFocus className={terminalStyles.search} maxLength={66} spellCheck={false} autoComplete="off" name="address"></input>
-                    <button type="submit" style={{ display: 'none' }}>Submit</button>
+                        <input placeholder="enter contract address" type="text" autoFocus className={terminalStyles.search} maxLength={66} spellCheck={false} autoComplete="off" name="address"></input>
+                        <button type="submit" style={{ display: 'none' }}>Submit</button>
                     </form>
                 </div>
             ) : null}

@@ -3,6 +3,7 @@ import axios from 'axios'
 const dexscreenerUrl = `https://api.dexscreener.io/latest/dex/tokens`;
 
 export default async function getTokenData(addresses) {
+    console.log("fetching new data...")
     try {
         const results = await Promise.all(addresses.map(address => axios.get(`${dexscreenerUrl}/${address}`)));
         return results.map(res => extractFormattedData(res.data)).filter(data => data !== null);

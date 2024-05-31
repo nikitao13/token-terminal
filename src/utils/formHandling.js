@@ -1,36 +1,39 @@
-export const toggleSearch = (currentAction, newAction, setActive, setAction) => {
-    if (currentAction === newAction) {
-        setActive(active => !active);
+export const toggleSearch = (action, newAction, setActive, setAction) => {
+    if (action === newAction) {
+        setActive(prev => !prev);
     } else {
         setAction(newAction);
         setActive(true);
     }
-};
+}
 
-export const handleAddAddress = (newAddress, setAddresses) => {
-    setAddresses(prevAddresses => {
-        if (!prevAddresses.includes(newAddress)) {
-            return [...prevAddresses, newAddress];
+export const handleAddToken = async (newToken, setTokens) => {
+    setTokens(prevTokens => {
+        if (!prevTokens.find(token => token.address === newToken.address)) {
+            return [...prevTokens, newToken];
         }
-        return prevAddresses;
+        return prevTokens;
     });
-};
+}
 
-export const handleRemoveAddress = (addressToRemove, setAddresses) => {
-    setAddresses(prevAddresses => prevAddresses.filter(address => address !== addressToRemove));
-};
+export const handleRemoveToken = (tokenToRemove, setTokens) => {
+    setTokens(prevTokens => prevTokens.filter(token => token.address !== tokenToRemove.address));
+}
 
-export const handleSubmit = (e, action, handleAddAddress, handleRemoveAddress, setActive) => {
+export const handleSubmit = async (e, action, handleAdd, handleRemove, setActive, fetchTokenData) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const address = formData.get('address');
     if (address) {
         if (action === "add") {
-            handleAddAddress(address);
+            const data = await fetchTokenData([address]);
+            if (data.length > 0) {
+                await handleAdd(data[0]);
+            }
         } else if (action === "remove") {
-            handleRemoveAddress(address);
+            handleRemove({ address });
         }
         e.target.reset();
         setActive(false);
     }
-};
+}
