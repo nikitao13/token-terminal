@@ -31,10 +31,15 @@ function Terminal() {
         handleSubmit(e, action, handleAdd, handleRemove, setActive, fetchTokenData);
     }
     
+    const handleSort = () => {
+        const sortedList = [...tokens].sort((a, b) => a.symbol.localeCompare(b.symbol, undefined, { sensitivity: 'base' }));
+        setTokens(sortedList);
+    }
+
     return (
         <div className="subpixel-antialiased w-full">
             <section className={terminalStyles.container}>
-                <Nav toggleSearch={handleToggleSearch}/> 
+                <Nav toggleSearch={handleToggleSearch} handleSort={handleSort}/> 
                 <TokenDataTable tokens={tokens}/>
             </section>
             {active ? (
