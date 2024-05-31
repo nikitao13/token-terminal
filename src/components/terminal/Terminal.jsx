@@ -1,8 +1,9 @@
 import TokenDataTable from "./TokenDataTable";
 import fetchTokenData from "../../utils/fetchTokenData";
 import Nav from "./Nav";
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { toggleSearch, handleAddToken, handleRemoveToken, handleSubmit } from '../../utils/formHandling';
+import { TokenContext } from '../../TokenContext';
 
 function Terminal() {
     const terminalStyles = {
@@ -13,7 +14,7 @@ function Terminal() {
 
     const [active, setActive] = useState(false);
     const [action, setAction] = useState("add");
-    const [tokens, setTokens] = useState([]);
+    const { tokens, setTokens } = useContext(TokenContext);
 
     const handleToggleSearch = (newAction) => {
         toggleSearch(action, newAction, setActive, setAction);
@@ -21,11 +22,11 @@ function Terminal() {
 
     const handleAdd = useCallback((newToken) => {
         handleAddToken(newToken, setTokens);
-    }, []);
+    }, [setTokens]);
 
     const handleRemove = useCallback((tokenToRemove) => {
         handleRemoveToken(tokenToRemove, setTokens);
-    }, []);
+    }, [setTokens]);
 
     const handleFormSubmit = async (e) => {
         handleSubmit(e, action, handleAdd, handleRemove, setActive, fetchTokenData, tokens);
