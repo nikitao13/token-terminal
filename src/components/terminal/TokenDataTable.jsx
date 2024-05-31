@@ -22,7 +22,7 @@ function TokenDataTable() {
         setTokenData(tokens);
         setLoading(false);
 
-        const intervalId = setInterval(updateTokenData, 60000);
+        const intervalId = setInterval(updateTokenData, 15000);
 
         return () => clearInterval(intervalId);
     }, [tokens, updateTokenData]);
