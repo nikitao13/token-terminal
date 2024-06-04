@@ -1,7 +1,7 @@
 function LpFeed() {
   const tableStyles = {
     container:
-      "text-green-500 px-1 py-1 border-t border-l border-b mt-2 border-green-900 bg-green-900/5 flex ml-1 font-mono max-h-[582.898px] h-[582.898px] min-h-[582.898px] w-[35vw] min-w-[35vw] 2xl:min-h-[87vh] 2xl:max-h-[87vh]",
+      "overflow-hidden text-green-500 px-1 py-1 border-t border-l border-b mt-2 border-green-900 bg-green-900/5 flex ml-1 font-mono max-h-[582.898px] h-[582.898px] min-h-[582.898px] w-[35vw] min-w-[35vw] 2xl:min-h-[87vh] 2xl:max-h-[87vh]",
     th: "py-1.5 font-medium text-green-500 uppercase tracking-wider",
     td: "py-2 whitespace-nowrap transition-color duration-600 tracking-wider",
     purple: "text-purple-600",
@@ -18,7 +18,7 @@ function LpFeed() {
           </tr>
         </thead>
 
-        <tbody className="divide-y divide-gray-800 text-xs flex flex-col gap-3">
+        <tbody className="divide-y divide-gray-800 xl:text-xs 2xl:text-lg sm:text-xs flex flex-col gap-3">
           <td className={tableStyles.td}>
             <div className="">
               NEW POOL! <span className="text-purple-600">[16:00:28]</span>

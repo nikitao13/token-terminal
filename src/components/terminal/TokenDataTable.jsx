@@ -25,9 +25,9 @@ function TokenDataTable() {
   const tableStyles = {
     container:
       "text-green-500 flex flex-row px-1 py-1 border mt-2 border-green-900 bg-green-900/5 w-[65vw] min-w-[60vw] max-h-[582.898px] h-[582.898px] min-h-[582.898px] 2xl:min-h-[87vh] 2xl:max-h-[87vh]",
-    th: "px-4 py-1.5 font-medium text-green-500 uppercase tracking-wider",
-    td: "px-4 py-3.5 whitespace-nowrap transition-color duration-600",
-    row: "font-light hover:opacity-75 transition-all duration-300",
+    th: "xl:px-4 xl:py-1.5 font-medium text-green-500 uppercase tracking-wider",
+    td: "xl:px-4 xl:py-3.5 whitespace-nowrap transition-color duration-600",
+    row: "font-light hover:opacity-75 transition-all duration-300 xl:text-base 2xl:text-xl sm:text-xs",
     purple: "text-purple-600",
   };
 
@@ -41,10 +41,10 @@ function TokenDataTable() {
             <th className={th}>
               <span className={purple}>Ticker</span>
             </th>
-            <th className={th}>Price</th>
             <th className={th}>
               <span className={purple}>Fdv</span>
             </th>
+            <th className={th}>Price</th>
             <th className={th}>
               5min <span className={purple}>%</span>
             </th>
@@ -73,8 +73,8 @@ function TokenDataTable() {
                 </a>
                 <span className={purple}>)</span>
               </td>
-              <td className={td}>${token.price}</td>
               <td className={td}>{formatMarketCap(token.fdv)}</td>
+              <td className={td}>${token.price}</td>
               <td
                 className={`${td} ${
                   token.changeFive < 0 ? "text-red-500" : "text-green-500"

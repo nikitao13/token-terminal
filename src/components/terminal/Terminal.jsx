@@ -84,7 +84,7 @@ function Terminal() {
 
   return (
     <div className="subpixel-antialiased flex">
-      <div className="trackedTokens w-[65vw] min-w-[60vw]">
+      <div className="trackedTokens w-[65vw] min-w-[60v] overflow-hidden">
         <section className={terminalStyles.container}>
           <Nav toggleSearch={handleToggleSearch} handleSort={handleSort} />
           <TokenDataTable />
