@@ -24,10 +24,10 @@ function TokenDataTable() {
 
   const tableStyles = {
     container:
-      "text-green-500 flex flex-row px-1 py-1 border mt-2 border-green-900 bg-green-900/5 resize-x overflow-auto max-w-[970px] min-w-[580px] min-h-[185px]",
+      "text-green-500 flex flex-row px-1 py-1 border mt-2 border-green-900 bg-green-900/5 w-[65vw] min-w-[60vw] max-h-[582.898px] h-[582.898px] min-h-[582.898px] 2xl:min-h-[87vh] 2xl:max-h-[87vh]",
     th: "px-4 py-1.5 font-medium text-green-500 uppercase tracking-wider",
     td: "px-4 py-3.5 whitespace-nowrap transition-color duration-600",
-    row: "text-md font-light hover:opacity-75 transition-all duration-300",
+    row: "font-light hover:opacity-75 transition-all duration-300",
     purple: "text-purple-600",
   };
 

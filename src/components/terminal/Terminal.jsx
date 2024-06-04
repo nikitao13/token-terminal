@@ -21,7 +21,7 @@ function Terminal() {
   const terminalStyles = {
     container: "flex subpixel-antialiased",
     search:
-      "w-full font-mono px-1 text-sm bg-transparent text-md text-green-600 placeholder-green-600 outline-none mt-2 opacity-75",
+      "w-full font-mono px-1 text-sm bg-transparent text-md text-green-600 placeholder-green-600 outline-none mt-1 opacity-75",
     searchWrapper: "relative my-2 flex w-full",
   };
 
@@ -83,8 +83,8 @@ function Terminal() {
   }, [isDisabled, active, action]);
 
   return (
-    <div className="subpixel-antialiased w-full flex min-w-[300px]">
-      <div className="trackedTokens min-w-[200px] max-w-[950px]">
+    <div className="subpixel-antialiased flex">
+      <div className="trackedTokens w-[65vw] min-w-[60vw]">
         <section className={terminalStyles.container}>
           <Nav toggleSearch={handleToggleSearch} handleSort={handleSort} />
           <TokenDataTable />
@@ -92,13 +92,13 @@ function Terminal() {
         {active ? (
           <div className={terminalStyles.searchWrapper}>
             <span className={getAddRemoveClass(action)}>{">"}</span>
-            <form onSubmit={handleFormSubmit} className="w-[575px]">
+            <form onSubmit={handleFormSubmit} className="w-[580px]">
               <input
                 ref={inputRef}
                 placeholder="enter contract address"
                 type="text"
                 className={terminalStyles.search}
-                maxLength={66}
+                maxLength={64}
                 spellCheck={false}
                 autoComplete="off"
                 name="address"
@@ -114,7 +114,7 @@ function Terminal() {
           </div>
         ) : null}
       </div>
-      <div className="flex-grow margin-auto min-w-[350px]">
+      <div>
         <LpFeed />
       </div>
     </div>

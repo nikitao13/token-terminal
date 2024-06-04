@@ -1,9 +1,9 @@
 function LpFeed() {
   const tableStyles = {
     container:
-      "text-green-500 px-1 py-1 border-t border-l border-b mt-2 border-green-900 bg-green-900/5 overflow-auto flex ml-1 font-mono min-h-[578px] max-h-[578px]",
+      "text-green-500 px-1 py-1 border-t border-l border-b mt-2 border-green-900 bg-green-900/5 flex ml-1 font-mono max-h-[582.898px] h-[582.898px] min-h-[582.898px] w-[35vw] min-w-[35vw] 2xl:min-h-[87vh] 2xl:max-h-[87vh]",
     th: "py-1.5 font-medium text-green-500 uppercase tracking-wider",
-    td: "py-2 whitespace-nowrap transition-color duration-600",
+    td: "py-2 whitespace-nowrap transition-color duration-600 tracking-wider",
     purple: "text-purple-600",
   };
 
