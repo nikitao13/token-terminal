@@ -1,8 +1,11 @@
-import './App.css'
-import Header from './components/Header'
-import Terminal from './components/terminal/Terminal'
+import "./App.css";
+import Header from "./components/Header";
+import Terminal from "./components/terminal/Terminal";
 
-const appStyles = {container: "flex flex-col font-sans tracking-wide select-none bg-black text-green-600 w-full h-screen"}
+const appStyles = {
+  container:
+    "flex flex-col font-sans tracking-wide select-none bg-black text-green-600 w-full h-screen",
+};
 
 function App() {
   return (
@@ -12,9 +15,8 @@ function App() {
       <main className="flex-grow">
         <Terminal />
       </main>
-      
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
