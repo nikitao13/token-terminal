@@ -21,14 +21,12 @@ function TokenDataTable() {
     useEffect(() => {
         setTokenData(tokens);
         setLoading(false);
-
         const intervalId = setInterval(updateTokenData, 15000);
-
         return () => clearInterval(intervalId);
     }, [tokens, updateTokenData]);
 
     const tableStyles = {
-        container: "text-green-500 flex flex-row px-1 py-1 border mt-2 border-green-900 bg-green-900/5 resize-x overflow-auto max-w-[970px] min-w-[575px] min-h-[185px]",
+        container: "text-green-500 flex flex-row px-1 py-1 border mt-2 border-green-900 bg-green-900/5 resize-x overflow-auto max-w-[970px] min-w-[580px] min-h-[185px]",
         th: "px-4 py-1.5 font-medium text-green-500 uppercase tracking-wider",
         td: "px-4 py-3.5 whitespace-nowrap transition-color duration-600",
         row: "text-md font-light hover:opacity-75 transition-all duration-300",
@@ -48,7 +46,7 @@ function TokenDataTable() {
                     <tr className="text-left text-xs">
                         <th className={th}><span className={purple}>Ticker</span></th>
                         <th className={th}>Price</th>
-                        <th className={th}>Fdv</th>
+                        <th className={th}><span className={purple}>Fdv</span></th>
                         <th className={th}>5min <span className={purple}>%</span></th>                    
                         <th className={th}>1hr <span className={purple}>%</span></th>                    
                         <th className={th}>24hr <span className={purple}>%</span></th>                    

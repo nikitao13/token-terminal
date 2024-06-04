@@ -1,41 +1,55 @@
 import TokenDataTable from "./TokenDataTable";
 import fetchTokenData from "../../utils/fetchTokenData";
 import Nav from "./Nav";
-import { useState, useCallback, useContext } from 'react';
+import { useState, useCallback, useContext, useEffect, useRef } from 'react';
 import { toggleSearch, handleAddToken, handleRemoveToken, handleSubmit } from '../../utils/formHandling';
 import { TokenContext } from '../../TokenContext';
 
 function Terminal() {
+    const [active, setActive] = useState(false);
+    const [action, setAction] = useState("add");
+    const { tokens, setTokens } = useContext(TokenContext);
+    const [errorMsg, setErrorMsg] = useState("");
+    const inputRef = useRef(null);
+
     const terminalStyles = {
         container: "flex subpixel-antialiased",
         search: "w-full font-mono px-1 text-sm bg-transparent text-md text-green-600 placeholder-green-600 outline-none mt-2 opacity-75",
         searchWrapper: "relative my-2 flex w-full"
     }
 
-    const [active, setActive] = useState(false);
-    const [action, setAction] = useState("add");
-    const { tokens, setTokens } = useContext(TokenContext);
-
-    const handleToggleSearch = (newAction) => {
-        toggleSearch(action, newAction, setActive, setAction);
+    const getAddRemoveClass = (action) => {
+        return action === "add" ? "pl-2 mt-1.5 text-purple-600 flex flex-col justify-center text-sm" : "pl-2 mt-1.5 text-red-600 flex flex-col justify-center text-sm";
     }
 
-    const handleAdd = useCallback((newToken) => {
-        handleAddToken(newToken, setTokens);
-    }, [setTokens]);
+    const handleToggleSearch = useCallback((newAction) => {
+        toggleSearch(action, newAction, setActive, setAction);
+    }, [action, setActive, setAction]);
+
+    const handleAdd = useCallback(async (newToken) => {
+        return await handleAddToken(newToken, tokens, setTokens, fetchTokenData);
+    }, [tokens, setTokens]);
 
     const handleRemove = useCallback((tokenToRemove) => {
-        handleRemoveToken(tokenToRemove, setTokens);
-    }, [setTokens]);
+        return handleRemoveToken(tokenToRemove, tokens, setTokens);
+    }, [tokens, setTokens]);
 
     const handleFormSubmit = async (e) => {
-        handleSubmit(e, action, handleAdd, handleRemove, setActive, fetchTokenData, tokens);
+        await handleSubmit(e, action, handleAdd, handleRemove, setActive, fetchTokenData, tokens, setErrorMsg, setTokens);
     }
-    
+
     const handleSort = () => {
         const sortedList = [...tokens].sort((a, b) => a.symbol.localeCompare(b.symbol, undefined, { sensitivity: 'base' }));
         setTokens(sortedList);
     }
+
+    const isDisabled = errorMsg === "token not found." || errorMsg === "token array is full.";
+
+    useEffect(() => {
+        if (!isDisabled && active && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [isDisabled, active, action]);
 
     return (
         <div className="subpixel-antialiased w-full">
@@ -45,9 +59,22 @@ function Terminal() {
             </section>
             {active ? (
                 <div className={terminalStyles.searchWrapper}>
-                    <span className="pl-2 mt-1.5 text-purple-600 flex flex-col justify-center text-sm">{">"}</span>
+                    <span className={getAddRemoveClass(action)}>{">"}</span>
                     <form onSubmit={handleFormSubmit} className="w-[575px]">
-                        <input placeholder="enter contract address" type="text" autoFocus className={terminalStyles.search} maxLength={66} spellCheck={false} autoComplete="off" name="address"></input>
+                        <input 
+                            ref={inputRef}
+                            placeholder="enter contract address" 
+                            type="text" 
+                            className={terminalStyles.search} 
+                            maxLength={66} 
+                            spellCheck={false} 
+                            autoComplete="off" 
+                            name="address"
+                            value={errorMsg}
+                            onChange={(e) => setErrorMsg(e.target.value)}
+                            disabled={isDisabled}
+                            autoFocus 
+                        />
                         <button type="submit" style={{ display: 'none' }}>Submit</button>
                     </form>
                 </div>
