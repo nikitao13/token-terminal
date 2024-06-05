@@ -13,7 +13,7 @@ function Nav({ toggleSearch, handleSort }) {
     container:
       "tracking-wide bg-green-900/5 font-mono text-sm flex flex-col mt-2 px-2 text-left border-t border-b border-green-900 max-h-[582.898px] h-[582.898px] min-h-[582.898px] 2xl:min-h-[87vh] 2xl:max-h-[87vh]",
     scale: "active:scale-125",
-    heart: "active:text-purple-600 active:opacity-100",
+    heart: "active:text-purple-600 active:opacity-100"
   };
 
   const { align, icons, text, effects, url, container, scale, heart } =
@@ -56,7 +56,7 @@ function Nav({ toggleSearch, handleSort }) {
 
 Nav.propTypes = {
   toggleSearch: PropTypes.func.isRequired,
-  handleSort: PropTypes.func.isRequired,
+  handleSort: PropTypes.func.isRequired
 };
 
 export default Nav;

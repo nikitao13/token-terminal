@@ -26,7 +26,7 @@ function extractFormattedData(data) {
       fdv,
       priceUsd,
       baseToken: { address: address, name: tokenName, symbol: symbol },
-      priceChange,
+      priceChange
     } = pair;
     const { m5, h1, h24 } = priceChange || {};
     return formatData(
@@ -68,5 +68,5 @@ const formatData = (
   symbol: symbol,
   changeFive: formatPercentage(changeFive),
   changeHour: formatPercentage(changeHour),
-  changeDay: formatPercentage(changeDay),
+  changeDay: formatPercentage(changeDay)
 });

@@ -17,9 +17,11 @@ function TokenDataTable() {
   }, [tokens, setTokens]);
 
   useEffect(() => {
-    setTokenData(tokens);
-    const intervalId = setInterval(updateTokenData, 15000);
-    return () => clearInterval(intervalId);
+    if (tokens.length > 0) {
+      setTokenData(tokens);
+      const intervalId = setInterval(updateTokenData, 10000);
+      return () => clearInterval(intervalId);
+    }
   }, [tokens, updateTokenData]);
 
   const tableStyles = {
@@ -28,7 +30,7 @@ function TokenDataTable() {
     th: "xl:px-4 xl:py-1.5 font-medium text-green-500 uppercase tracking-wider",
     td: "xl:px-4 xl:py-3.5 whitespace-nowrap transition-color duration-600",
     row: "font-light hover:opacity-75 transition-all duration-300 xl:text-base 2xl:text-xl sm:text-xs",
-    purple: "text-purple-600",
+    purple: "text-purple-600"
   };
 
   const { container, th, td, row, purple } = tableStyles;
@@ -58,7 +60,10 @@ function TokenDataTable() {
         </thead>
         <tbody className="divide-y divide-gray-800 text-sm">
           {tokenData.map((token, index) => (
-            <tr key={index} className={row}>
+            <tr
+              key={index}
+              className={row}
+            >
               <td className={`${td} hover:cursor-pointer`}>
                 <span className={purple}>(</span>
                 <a

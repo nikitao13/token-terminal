@@ -22,7 +22,7 @@ function Terminal() {
     container: "flex subpixel-antialiased",
     search:
       "w-full font-mono px-1 text-sm bg-transparent text-md text-green-600 placeholder-green-600 outline-none mt-1 opacity-75",
-    searchWrapper: "relative my-2 flex w-full",
+    searchWrapper: "relative my-2 flex w-full"
   };
 
   const getAddRemoveClass = (action) => {
@@ -86,13 +86,19 @@ function Terminal() {
     <div className="subpixel-antialiased flex">
       <div className="trackedTokens w-[65vw] min-w-[60v] overflow-hidden">
         <section className={terminalStyles.container}>
-          <Nav toggleSearch={handleToggleSearch} handleSort={handleSort} />
+          <Nav
+            toggleSearch={handleToggleSearch}
+            handleSort={handleSort}
+          />
           <TokenDataTable />
         </section>
         {active ? (
           <div className={terminalStyles.searchWrapper}>
             <span className={getAddRemoveClass(action)}>{">"}</span>
-            <form onSubmit={handleFormSubmit} className="w-[580px]">
+            <form
+              onSubmit={handleFormSubmit}
+              className="w-[580px]"
+            >
               <input
                 ref={inputRef}
                 placeholder="enter contract address"
@@ -107,7 +113,10 @@ function Terminal() {
                 disabled={isDisabled}
                 autoFocus
               />
-              <button type="submit" style={{ display: "none" }}>
+              <button
+                type="submit"
+                style={{ display: "none" }}
+              >
                 Submit
               </button>
             </form>
