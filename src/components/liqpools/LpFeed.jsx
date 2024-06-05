@@ -1,18 +1,28 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:3001");
+let socket;
+
+function getSocket() {
+  if (!socket) {
+    socket = io("http://localhost:3001");
+  }
+  return socket;
+}
 
 function LpFeed() {
   const [lpPairs, setLpPairs] = useState([]);
 
   useEffect(() => {
-    socket.on("new_lp_pair", (data) => {
+    const socketInstance = getSocket();
+
+    socketInstance.on("new_lp_pair", (data) => {
       setLpPairs((prevPairs) => [data, ...prevPairs]);
+      console.log("new lp found!");
     });
 
     return () => {
-      socket.off("new_lp_pair");
+      socketInstance.off("new_lp_pair");
     };
   }, []);
 
@@ -36,8 +46,11 @@ function LpFeed() {
         </thead>
 
         <tbody className="divide-y divide-gray-800 xl:text-xs 2xl:text-lg sm:text-xs flex flex-col gap-3">
-        {lpPairs.map(({ time, newLpPair }, index) => (
-            <tr key={index} className={tableStyles.td}>
+          {lpPairs.map(({ time, newLpPair }, index) => (
+            <tr
+              key={index}
+              className={tableStyles.td}
+            >
               <td>
                 <div>
                   NEW POOL! <span className="text-purple-600">[{time}]</span>

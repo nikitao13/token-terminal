@@ -20,11 +20,14 @@ export const handleAddToken = async (
     return false;
   }
 
-  const data = await fetchTokenData([newToken.address]);
-
-  if (data.length > 0) {
-    setTokens((prevTokens) => [...prevTokens, data[0]]);
-    return true;
+  try {
+    const data = await fetchTokenData([newToken.address]);
+    if (data.length > 0) {
+      setTokens((prevTokens) => [...prevTokens, data[0]]);
+      return true;
+    }
+  } catch (error) {
+    console.error("error adding token:", error);
   }
 
   return false;
@@ -38,12 +41,8 @@ export const handleRemoveToken = (tokenToRemove, tokens, setTokens) => {
     return false;
   }
 
-  setTimeout(
-    () =>
-      setTokens((prevTokens) =>
-        prevTokens.filter((token) => token.address !== tokenToRemove.address)
-      ),
-    150
+  setTokens((prevTokens) =>
+    prevTokens.filter((token) => token.address !== tokenToRemove.address)
   );
   return true;
 };
@@ -61,15 +60,19 @@ export const handleSubmit = async (
 ) => {
   e.preventDefault();
   const formData = new FormData(e.target);
-  const address = formData.get("address");
+  const address = formData.get("address")?.trim();
 
-  if (!address) return;
+  if (!address) {
+    setErrorMsg("address is required.");
+    setTimeout(() => setErrorMsg(""), 1500);
+    return;
+  }
 
   let success = false;
   if (action === "add") {
     success = await handleAdd({ address }, tokens, setTokens, fetchTokenData);
     if (!success) {
-      setErrorMsg("failed to add token. it might be a duplicate.");
+      setErrorMsg("failed to add token. It might be a duplicate.");
       setTimeout(() => setErrorMsg(""), 1500);
     }
   } else if (action === "remove") {

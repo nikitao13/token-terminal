@@ -7,19 +7,24 @@ import http from "http";
 
 config();
 
-const rpc_url = process.env.RPC;
-const wss_url = process.env.WSS;
-const raydium_pub_key = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8";
+const RPC_URL = process.env.RPC2;
+const WSS_URL = process.env.WSS2;
+const RAYDIUM_PROGRAM_ID = new PublicKey(
+  "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"
+);
+const INSTRUCTION_NAME = "initialize2";
+const SOLANA_TOKEN_ADDRESS = "So11111111111111111111111111111111111111112";
+const TOKEN_A_INDEX = 8;
+const TOKEN_B_INDEX = 9;
 
-const raydium = new PublicKey(raydium_pub_key);
-const instruction_name = "initialize2";
-
-const connection = new Connection(rpc_url, {
-  wsEndpoint: wss_url
+const connection = new Connection(RPC_URL, {
+  wsEndpoint: WSS_URL
 });
 
 let lastProcessedSignature = null;
 let retryDelay = 500;
+let logsSubscriptionId = null;
+let isShuttingDown = false;
 
 const server = http.createServer();
 const io = new Server(server, {
@@ -30,10 +35,10 @@ const io = new Server(server, {
 
 async function startConnection(connection, programAddress, searchInstruction) {
   console.log(
-    "monitoring logs for program:",
+    "Monitoring logs for program:",
     programAddress.toString() + "..."
   );
-  connection.onLogs(
+  logsSubscriptionId = connection.onLogs(
     programAddress,
     ({ logs, err, signature }) => {
       if (err) return;
@@ -56,7 +61,7 @@ async function fetchRaydiumMints(txId, connection) {
     });
 
     const instruction = tx?.transaction.message.instructions.find(
-      (ix) => ix.programId.toBase58() === raydium_pub_key
+      (ix) => ix.programId.toBase58() === RAYDIUM_PROGRAM_ID.toBase58()
     );
 
     if (!instruction) {
@@ -65,19 +70,14 @@ async function fetchRaydiumMints(txId, connection) {
     }
 
     const accounts = instruction.accounts;
+    const tokenAAccount = accounts[TOKEN_A_INDEX];
+    const tokenBAccount = accounts[TOKEN_B_INDEX];
 
-    const tokenAIndex = 8;
-    const tokenBIndex = 9;
-
-    const tokenAAccount = accounts[tokenAIndex];
-    const tokenBAccount = accounts[tokenBIndex];
-
-    const solanaTokenAddress = "So11111111111111111111111111111111111111112";
     let newLpPair;
 
-    if (tokenAAccount.toBase58() !== solanaTokenAddress) {
+    if (tokenAAccount.toBase58() !== SOLANA_TOKEN_ADDRESS) {
       newLpPair = tokenAAccount.toBase58();
-    } else if (tokenBAccount.toBase58() !== solanaTokenAddress) {
+    } else if (tokenBAccount.toBase58() !== SOLANA_TOKEN_ADDRESS) {
       newLpPair = tokenBAccount.toBase58();
     }
 
@@ -92,30 +92,38 @@ async function fetchRaydiumMints(txId, connection) {
       io.emit("new_lp_pair", { time, newLpPair });
     }
   } catch (error) {
-    console.log("error fetching transaction:", txId);
+    console.log("Error fetching transaction:", txId);
     console.log(error.message);
     handleRetry(txId, connection);
   }
 }
 
 async function handleRetry(txId, connection) {
+  if (isShuttingDown) return;
+
   console.log(
-    `server responded with 429 too many requests.\nretrying after ${retryDelay}ms delay...`
+    `Server responded with 429 Too Many Requests. Retrying after ${retryDelay}ms delay...`
   );
+  const delay = retryDelay + Math.random() * 1000;
   setTimeout(async () => {
     try {
       await fetchRaydiumMints(txId, connection);
-      retryDelay = 3000;
+      retryDelay = 30000;
     } catch (error) {
-      retryDelay = Math.min(retryDelay * 2, 32000);
+      retryDelay = Math.min(retryDelay * 2, 300000);
       handleRetry(txId, connection);
     }
-  }, retryDelay);
+  }, delay);
 }
 
 function shutdown() {
-  console.log("Shutting down gracefully...");
-  connection.removeAllListeners();
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+
+  console.log("Shutting down...");
+  if (logsSubscriptionId) {
+    connection.removeOnLogsListener(logsSubscriptionId);
+  }
   server.close(() => {
     console.log("Server closed");
     process.exit(0);
@@ -125,8 +133,10 @@ function shutdown() {
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
-startConnection(connection, raydium, instruction_name).catch(console.error);
+startConnection(connection, RAYDIUM_PROGRAM_ID, INSTRUCTION_NAME).catch(
+  console.error
+);
 
 server.listen(3001, () => {
-  console.log("websocket server listening on port 3001");
+  console.log("WebSocket server listening on port 3001");
 });

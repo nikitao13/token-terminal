@@ -2,71 +2,66 @@ import axios from "axios";
 
 const dexscreenerUrl = `https://api.dexscreener.io/latest/dex/tokens`;
 
-export default async function getTokenData(addresses) {
-  console.log("fetching new data...");
+export default async function fetchTokenData(addresses) {
   try {
-    const results = await Promise.all(
-      addresses.map((address) => axios.get(`${dexscreenerUrl}/${address}`))
+    console.log("http request!");
+    const addressString = addresses.join(",");
+    const result = await axios.get(`${dexscreenerUrl}/${addressString}`);
+
+    const filteredPairs = result.data.pairs.filter((pair) =>
+      addresses.includes(pair.baseToken.address)
     );
-    return results
-      .map((res) => extractFormattedData(res.data))
+
+    const groupedByToken = filteredPairs.reduce((acc, pair) => {
+      const address = pair.baseToken.address;
+      if (
+        !acc[address] ||
+        ((pair.liquidity && pair.liquidity.usd) || 0) >
+          ((acc[address].liquidity && acc[address].liquidity.usd) || 0)
+      ) {
+        acc[address] = pair;
+      }
+      return acc;
+    }, {});
+
+    const formattedData = Object.values(groupedByToken)
+      .map((pair) => extractFormattedData(pair))
       .filter((data) => data !== null);
+
+    return formattedData;
   } catch (error) {
     console.error("Error fetching token data:", error);
     return [];
   }
 }
 
-function extractFormattedData(data) {
-  const pairs = data.pairs || [];
-  if (pairs.length > 0) {
-    const pair = pairs[0];
-    const {
-      chainId,
-      fdv,
-      priceUsd,
-      baseToken: { address: address, name: tokenName, symbol: symbol },
-      priceChange
-    } = pair;
-    const { m5, h1, h24 } = priceChange || {};
-    return formatData(
-      chainId,
-      address,
-      tokenName,
-      priceUsd,
-      fdv,
-      symbol,
-      m5,
-      h1,
-      h24
-    );
-  }
-  return null;
+function extractFormattedData(pair) {
+  if (!pair) return null;
+
+  const {
+    chainId,
+    fdv,
+    priceUsd,
+    baseToken: { address, name: tokenName, symbol },
+    priceChange
+  } = pair;
+
+  const { m5, h1, h24 } = priceChange || {};
+
+  return {
+    chainId,
+    address,
+    name: tokenName,
+    price: parseFloat(priceUsd),
+    fdv,
+    symbol,
+    changeFive: formatPercentage(m5),
+    changeHour: formatPercentage(h1),
+    changeDay: formatPercentage(h24)
+  };
 }
 
 const formatPercentage = (value) =>
   value >= 1000
     ? (value / 1000).toFixed(1) + "K"
     : parseFloat(value).toFixed(2);
-
-const formatData = (
-  chainId,
-  address,
-  tokenName,
-  priceUSD,
-  fdv,
-  symbol,
-  changeFive,
-  changeHour,
-  changeDay
-) => ({
-  chainId: chainId,
-  address: address,
-  name: tokenName,
-  price: parseFloat(parseFloat(priceUSD).toFixed(8)),
-  fdv: fdv,
-  symbol: symbol,
-  changeFive: formatPercentage(changeFive),
-  changeHour: formatPercentage(changeHour),
-  changeDay: formatPercentage(changeDay)
-});

@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 export const TokenContext = createContext();
 
@@ -11,7 +12,6 @@ export const TokenProvider = ({ children }) => {
   useEffect(() => {
     if (tokens.length > 0) {
       localStorage.setItem("tokens", JSON.stringify(tokens));
-      console.log("adding to local storage:", JSON.stringify(tokens));
     }
   }, [tokens]);
 
@@ -20,4 +20,8 @@ export const TokenProvider = ({ children }) => {
       {children}
     </TokenContext.Provider>
   );
+};
+
+TokenProvider.propTypes = {
+  children: PropTypes.node.isRequired
 };
