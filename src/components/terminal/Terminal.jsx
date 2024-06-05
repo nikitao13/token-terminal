@@ -19,16 +19,16 @@ function Terminal() {
   const inputRef = useRef(null);
 
   const terminalStyles = {
-    container: "flex subpixel-antialiased",
+    container: "flex subpixel-antialiased overflow-hidden",
     search:
       "w-full font-mono px-1 text-sm bg-transparent text-md text-green-600 placeholder-green-600 outline-none mt-1 opacity-75",
-    searchWrapper: "relative my-2 flex w-full"
+    searchWrapper: "flex w-full mt-1.5"
   };
 
   const getAddRemoveClass = (action) => {
     return action === "add"
-      ? "pl-2 mt-1.5 text-purple-600 flex flex-col justify-center text-sm"
-      : "pl-2 mt-1.5 text-red-600 flex flex-col justify-center text-sm";
+      ? "pl-2 mt-1 text-purple-600 flex flex-col justify-center text-sm"
+      : "pl-2 mt-1 text-red-600 flex flex-col justify-center text-sm";
   };
 
   const handleToggleSearch = useCallback(

@@ -42,7 +42,7 @@ function TokenDataTable() {
   return (
     <div className={container}>
       <div className={tableWrapper}>
-        <table className="min-w-full divide-y divide-gray-700 ml-1.5">
+        <table className="min-w-full h-full divide-y divide-gray-700 ml-1.5">
           <thead>
             <tr className="text-left text-xs">
               <th className={th}>
