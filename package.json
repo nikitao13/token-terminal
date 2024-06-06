@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node src/utils/lpWebsocket.js",
+    "server": "node src/server/lpWebsocket.js",
     "client": "vite"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 import { useEffect, useContext, useCallback } from "react";
 import formatMarketCap from "../../utils/formatMarketCap";
-import { TokenContext } from "../../TokenContext";
+import { TokenContext } from "../../context/TokenContext";
 import fetchTokenData from "../../utils/fetchTokenData";
 
 function TokenDataTable() {

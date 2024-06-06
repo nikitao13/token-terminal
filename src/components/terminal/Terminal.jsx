@@ -1,7 +1,7 @@
-import TokenDataTable from "./TokenDataTable";
+import TokenDataTable from "../Terminal/TokenDataTable";
 import fetchTokenData from "../../utils/fetchTokenData";
-import LpFeed from "../liqpools/LpFeed";
-import Nav from "./Nav";
+import LpFeed from "../NewLiq/LpFeed";
+import Nav from "../Nav/Nav";
 import { useState, useCallback, useContext, useEffect, useRef } from "react";
 import {
   toggleSearch,
@@ -9,7 +9,7 @@ import {
   handleRemoveToken,
   handleSubmit
 } from "../../utils/formHandling";
-import { TokenContext } from "../../TokenContext";
+import { TokenContext } from "../../context/TokenContext";
 
 function Terminal() {
   const [active, setActive] = useState(false);
