@@ -28,7 +28,7 @@ function TokenDataTable() {
 
   const tableStyles = {
     container:
-      "text-green-500 flex flex-row lg:px-1 py-1 border-t lg:border-b lg:border mt-1 lg:mt-2 border-green-900 bg-green-900/5 w-full h-[55vh] lg:h-[85vh] overflow-x-auto",
+      "text-green-500 flex flex-row lg:px-1 py-1 border-t lg:border-b lg:border mt-1 lg:mt-2 border-green-900 bg-green-900/5 w-full h-[55vh] lg:h-[85vh] 2xl:h-[61.5vh] overflow-x-auto",
     tableWrapper:
       "w-full h-full scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent overflow-y-auto smooth-scroll pr-1 lg:pr-0",
     th: "px-0 lg:px-2 py-2 lg:py-3 font-medium text-green-500 uppercase tracking-wider whitespace-nowrap",

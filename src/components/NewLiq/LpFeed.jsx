@@ -28,7 +28,7 @@ function LpFeed() {
 
   const tableStyles = {
     container:
-      "overflow-hidden text-green-500 py-1 border-t lg:border-l border-b mt-0 lg:mt-2 border-green-900 bg-black lg:bg-green-900/5 flex flex-col lg:flex-row font-mono h-[55vh] lg:h-[85vh]",
+      "overflow-hidden text-green-500 py-1 border-t lg:border-l border-b mt-0 lg:mt-2 border-green-900 bg-black lg:bg-green-900/5 flex flex-col lg:flex-row font-mono h-[55vh] lg:h-[85vh] 2xl:h-[61.5vh]",
     th: "py-2 px-0.5 font-medium text-green-500 uppercase tracking-wider",
     td: "py-2 px-0.5 whitespace-nowrap transition-color duration-600 text-xs lg:text-xs 2xl:text-base",
     purple: "text-purple-600",
