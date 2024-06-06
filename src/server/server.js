@@ -1,21 +1,18 @@
-/* eslint-env node */
-
-import { config } from "dotenv";
-import { Connection, PublicKey } from "@solana/web3.js";
-import { Server } from "socket.io";
+// WEBSOCKET SERVER
+// listening for new Raydium V4 liquidity pool program logs on the Solana Blockchain
 import http from "http";
-
-config();
-
-const RPC_URL = process.env.RPC2;
-const WSS_URL = process.env.WSS2;
-const RAYDIUM_PROGRAM_ID = new PublicKey(
-  "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"
-);
-const INSTRUCTION_NAME = "initialize2";
-const SOLANA_TOKEN_ADDRESS = "So11111111111111111111111111111111111111112";
-const TOKEN_A_INDEX = 8;
-const TOKEN_B_INDEX = 9;
+import { Server } from "socket.io";
+import {
+  PORT,
+  RPC_URL,
+  WSS_URL,
+  RAYDIUM_PROGRAM_ID,
+  INSTRUCTION_NAME,
+  SOLANA_TOKEN_ADDRESS,
+  TOKEN_A_INDEX,
+  TOKEN_B_INDEX
+} from "./config/config.js";
+import { Connection } from "@solana/web3.js";
 
 const connection = new Connection(RPC_URL, {
   wsEndpoint: WSS_URL
@@ -137,6 +134,6 @@ startConnection(connection, RAYDIUM_PROGRAM_ID, INSTRUCTION_NAME).catch(
   console.error
 );
 
-server.listen(3001, () => {
-  console.log("WebSocket server listening on port 3001");
+server.listen(PORT, () => {
+  console.log(`WebSocket server listening on port ${PORT}`);
 });
