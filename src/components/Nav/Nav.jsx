@@ -11,7 +11,7 @@ function Nav({ toggleSearch, handleSort }) {
       "hover:cursor-pointer hover:opacity-50 transition-all duration-150",
     url: "https://dexscreener.com/new-pairs/6h?rankBy=pairAge&order=asc&chainIds=solana&maxAge=24",
     container:
-      "tracking-wide bg-green-900/5 font-mono text-sm flex flex-row lg:flex-col mt-1 lg:mt-2 px-2 lg:pt-2 text-left border-t border-b border-green-900 w-full 2xl:w-[3vw] lg:w-[5vw] 2xl:h-[61vh] lg:h-[80vh]",
+      "tracking-wide bg-green-900/5 font-mono text-sm flex flex-row lg:flex-col mt-1 lg:mt-2 px-2 lg:pt-2 text-left border-t border-b border-green-900 w-full 2xl:w-[3vw] lg:w-[5vw] 2xl:h-[60vh] lg:h-[80vh]",
     scale: "active:scale-125",
     heart: "active:text-purple-600 active:opacity-100 ml-1 lg:ml-0"
   };
