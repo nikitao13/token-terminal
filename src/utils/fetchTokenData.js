@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const dexscreenerUrl = `https://api.dexscreener.io/latest/dex/tokens`;
+const SOL_ADDRESS = "So11111111111111111111111111111111111111112";
 
 export default async function fetchTokenData(addresses) {
   try {
@@ -8,22 +9,30 @@ export default async function fetchTokenData(addresses) {
     const addressString = addresses.join(",");
     const result = await axios.get(`${dexscreenerUrl}/${addressString}`);
 
-    const filteredPairs = result.data.pairs.filter((pair) =>
-      addresses.includes(pair.baseToken.address)
-    );
+    // Filter pairs to include only pairs where SOL is the quote token
+    const filteredPairs = result.data.pairs.filter((pair) => {
+      const isQuoteSOL = pair.quoteToken.address === SOL_ADDRESS;
+      const isRelevantToken = addresses.includes(pair.baseToken.address);
+      return isRelevantToken && isQuoteSOL;
+    });
 
+    // Group by base token address and select the pair with the highest liquidity
     const groupedByToken = filteredPairs.reduce((acc, pair) => {
-      const address = pair.baseToken.address;
+      const baseAddress = pair.baseToken.address;
+      const currentLiquidity = (pair.liquidity && pair.liquidity.usd) || 0;
+
       if (
-        !acc[address] ||
-        ((pair.liquidity && pair.liquidity.usd) || 0) >
-          ((acc[address].liquidity && acc[address].liquidity.usd) || 0)
+        !acc[baseAddress] ||
+        currentLiquidity >
+          ((acc[baseAddress].liquidity && acc[baseAddress].liquidity.usd) || 0)
       ) {
-        acc[address] = pair;
+        acc[baseAddress] = pair;
       }
+
       return acc;
     }, {});
 
+    // Format the data for output
     const formattedData = Object.values(groupedByToken)
       .map((pair) => extractFormattedData(pair))
       .filter((data) => data !== null);

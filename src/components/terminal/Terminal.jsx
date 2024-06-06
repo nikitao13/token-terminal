@@ -19,10 +19,12 @@ function Terminal() {
   const inputRef = useRef(null);
 
   const terminalStyles = {
-    container: "flex subpixel-antialiased overflow-hidden",
+    container:
+      "flex flex-col lg:flex-row subpixel-antialiased overflow-hidden h-full",
     search:
-      "w-full font-mono px-1 text-sm bg-transparent text-md text-green-600 placeholder-green-600 outline-none mt-1 opacity-75",
-    searchWrapper: "flex w-full mt-1.5"
+      "w-full font-mono px-1 text-sm bg-transparent text-xs lg:text-sm text-green-600 placeholder-green-600 outline-none opacity-75 mt-1.5",
+    searchWrapper: "flex w-full lg:mt-1 mt-2 mb-2",
+    formContainer: "flex flex-col justify-start"
   };
 
   const getAddRemoveClass = (action) => {
@@ -35,7 +37,7 @@ function Terminal() {
     (newAction) => {
       toggleSearch(action, newAction, setActive, setAction);
     },
-    [action, setActive, setAction]
+    [action]
   );
 
   const handleAdd = useCallback(
@@ -83,8 +85,8 @@ function Terminal() {
   }, [isDisabled, active, action]);
 
   return (
-    <div className="subpixel-antialiased flex">
-      <div className="trackedTokens w-[65vw] min-w-[60v] overflow-hidden">
+    <div className="subpixel-antialiased flex flex-col lg:flex-row w-full h-full">
+      <div className="trackedTokens flex-1 overflow-hidden flex flex-col h-full">
         <section className={terminalStyles.container}>
           <Nav
             toggleSearch={handleToggleSearch}
@@ -92,38 +94,40 @@ function Terminal() {
           />
           <TokenDataTable />
         </section>
-        {active ? (
-          <div className={terminalStyles.searchWrapper}>
-            <span className={getAddRemoveClass(action)}>{">"}</span>
-            <form
-              onSubmit={handleFormSubmit}
-              className="w-[580px]"
-            >
-              <input
-                ref={inputRef}
-                placeholder="enter contract address"
-                type="text"
-                className={terminalStyles.search}
-                maxLength={64}
-                spellCheck={false}
-                autoComplete="off"
-                name="address"
-                value={errorMsg}
-                onChange={(e) => setErrorMsg(e.target.value)}
-                disabled={isDisabled}
-                autoFocus
-              />
-              <button
-                type="submit"
-                style={{ display: "none" }}
+        <div className={terminalStyles.formContainer}>
+          {active ? (
+            <div className={terminalStyles.searchWrapper}>
+              <span className={getAddRemoveClass(action)}>{">"}</span>
+              <form
+                onSubmit={handleFormSubmit}
+                className="w-full lg:w-3/4"
               >
-                Submit
-              </button>
-            </form>
-          </div>
-        ) : null}
+                <input
+                  ref={inputRef}
+                  placeholder="enter contract address"
+                  type="text"
+                  className={terminalStyles.search}
+                  maxLength={64}
+                  spellCheck={false}
+                  autoComplete="off"
+                  name="address"
+                  value={errorMsg}
+                  onChange={(e) => setErrorMsg(e.target.value)}
+                  disabled={isDisabled}
+                  autoFocus
+                />
+                <button
+                  type="submit"
+                  style={{ display: "none" }}
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+          ) : null}
+        </div>
       </div>
-      <div>
+      <div className="flex-grow lg:flex-none h-full w-full lg:w-1/3 lg:ml-1.5">
         <LpFeed />
       </div>
     </div>

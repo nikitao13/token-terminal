@@ -28,12 +28,12 @@ function TokenDataTable() {
 
   const tableStyles = {
     container:
-      "text-green-500 flex flex-row px-1 py-1 border mt-2 border-green-900 bg-green-900/5 w-[65vw] min-w-[60vw] h-[582.898px] min-h-[582.898px] 2xl:min-h-[87vh] 2xl:max-h-[87vh]",
+      "text-green-500 flex flex-row lg:px-1 py-1 border-t lg:border-b lg:border mt-1 lg:mt-2 border-green-900 bg-green-900/5 w-full h-[55vh] lg:h-[85vh] overflow-x-auto",
     tableWrapper:
-      "w-full h-full scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent overflow-y-auto smooth-scroll",
-    th: "xl:px-4 xl:py-2.5 font-medium text-green-500 uppercase tracking-wider",
-    td: "xl:px-4 xl:py-3.5 whitespace-nowrap transition-color duration-600",
-    row: "font-light hover:opacity-75 transition-all duration-300 xl:text-sm 2xl:text-base sm:text-xs md:text-sm",
+      "w-full h-full scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent overflow-y-auto smooth-scroll pr-1 lg:pr-0",
+    th: "px-0 lg:px-2 py-2 lg:py-3 font-medium text-green-500 uppercase tracking-wider whitespace-nowrap",
+    td: "px-0 lg:px-2 py-2 lg:py-3 whitespace-nowrap transition-color duration-600",
+    row: "font-light hover:opacity-75 transition-all duration-300 text-xs lg:text-sm 2xl:text-base",
     purple: "text-purple-600"
   };
 
@@ -84,7 +84,7 @@ function TokenDataTable() {
                   <span className={purple}>)</span>
                 </td>
                 <td className={td}>{formatMarketCap(token.fdv)}</td>
-                <td className={td}>${token.price}</td>
+                <td className={td}>${token.price.toFixed(6)}</td>
                 <td
                   className={`${td} ${
                     token.changeFive < 0 ? "text-red-500" : "text-green-500"
