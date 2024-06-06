@@ -1,6 +1,6 @@
 import "./styles/App.css";
-import Header from "./components/Header/Header";
-import Terminal from "./components/Terminal/Terminal";
+import Header from "./components/Header/Header.jsx";
+import Terminal from "./components/Terminal/Terminal.jsx";
 
 const appStyles = {
   container:
