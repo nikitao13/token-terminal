@@ -23,7 +23,7 @@ function Terminal() {
       "flex flex-col lg:flex-row subpixel-antialiased overflow-hidden h-full",
     search:
       "w-full font-mono px-1 text-sm bg-transparent text-xs lg:text-sm text-green-600 placeholder-green-600 outline-none opacity-75 mt-1.5",
-    searchWrapper: "flex w-full lg:mt-1 mt-2 mb-2",
+    searchWrapper: "flex w-full pt-0.5 pb-2 bg-green-900/5 lg:bg-black border-t border-green-900/60 lg:border-t-0",
     formContainer: "flex flex-col justify-start"
   };
 
@@ -127,7 +127,7 @@ function Terminal() {
           ) : null}
         </div>
       </div>
-      <div className="flex-grow lg:flex-none h-full w-full lg:w-1/3 lg:ml-1.5">
+      <div className="flex-grow lg:flex-none h-full w-full lg:w-1/3 ml-0 lg:ml-1.5">
         <LpFeed />
       </div>
     </div>
