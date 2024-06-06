@@ -1,4 +1,4 @@
-import TokenDataTable from "../Terminal/TokenDataTable";
+import TokenDataTable from "./TokenDataTable";
 import fetchTokenData from "../../utils/fetchTokenData";
 import LpFeed from "../NewLiq/LpFeed";
 import Nav from "../Nav/Nav";
@@ -23,7 +23,8 @@ function Terminal() {
       "flex flex-col lg:flex-row subpixel-antialiased overflow-hidden h-full",
     search:
       "w-full font-mono px-1 text-sm bg-transparent text-xs lg:text-sm text-green-600 placeholder-green-600 outline-none opacity-75 mt-1.5",
-    searchWrapper: "flex w-full pt-0.5 pb-2 bg-green-900/5 lg:bg-black border-t border-green-900/60 lg:border-t-0",
+    searchWrapper:
+      "flex w-full pt-0.5 pb-2 bg-green-900/5 lg:bg-black border-t border-green-900/60 lg:border-t-0",
     formContainer: "flex flex-col justify-start"
   };
 

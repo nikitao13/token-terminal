@@ -26,7 +26,7 @@ let isShuttingDown = false;
 const server = http.createServer();
 const io = new Server(server, {
   cors: {
-    origin: "*"
+    origin: process.env.CORS_ORIGIN || "*",
   }
 });
 
