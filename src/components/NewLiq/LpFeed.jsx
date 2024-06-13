@@ -13,6 +13,7 @@ function getSocket() {
     socket = io(url.prod, {
       transports: ["websocket"]
     });
+    console.log(`WebSocket connection established: ${socket.id}`);
   }
   return socket;
 }
@@ -21,6 +22,7 @@ function LpFeed() {
   const [lpPairs, setLpPairs] = useState([]);
 
   useEffect(() => {
+    console.log("LpFeed component mounted");
     const socketInstance = getSocket();
 
     socketInstance.on("new_lp_pair", (data) => {
@@ -51,6 +53,7 @@ function LpFeed() {
     });
 
     return () => {
+      console.log("LpFeed component unmounted");
       socketInstance.off("new_lp_pair");
       socketInstance.off("initial_lp_pairs");
     };
