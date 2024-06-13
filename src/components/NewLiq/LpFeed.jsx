@@ -10,7 +10,10 @@ const url = {
 
 function getSocket() {
   if (!socket) {
-    socket = io(url.prod);
+    socket = io(url.prod, {
+      transports: ["websocket"],
+      secure: true
+    });
   }
   return socket;
 }
