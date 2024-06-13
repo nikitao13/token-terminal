@@ -28,10 +28,10 @@ function TokenDataTable() {
 
   const tableStyles = {
     container:
-      "text-green-500 flex flex-row px-0 py- border-t lg:border-b lg:border mt-1 lg:mt-2 border-green-900 bg-green-900/5 w-full h-[54.5vh] lg:h-[80vh] 2xl:h-[60vh] overflow-x-auto lg:tracking-wider",
+      "text-green-500 flex flex-row px-0 py-0 border-t lg:border-b lg:border lg:mt-2 border-green-900 lg:bg-green-900/5 w-full h-[52vh] lg:h-[80vh] 2xl:h-[60vh] overflow-x-auto lg:tracking-wider",
     tableWrapper:
       "w-full h-full scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent overflow-y-auto smooth-scroll pr-1 lg:pr-0",
-    th: "px-1 lg:px-3 py-2 lg:py-3 text-green-500 uppercase tracking-wide md:tracking-wider whitespace-nowrap font-bold",
+    th: "px-1.5 lg:px-3 py-2 lg:py-3 text-green-500 uppercase tracking-wide md:tracking-wider whitespace-nowrap font-bold",
     td: "px-1 lg:px-3 py-2 lg:py-3 whitespace-nowrap transition-color duration-600 tracking-wider md:tracking-wider",
     row: "font-light hover:opacity-75 transition-all duration-300 text-xs md:text-sm lg:text-sm 2xl:text-lg",
     purple: "text-purple-600"

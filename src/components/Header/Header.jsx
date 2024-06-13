@@ -1,7 +1,7 @@
 function Header() {
   const headerStyles = {
     container: "w-full h-max bg-green-900/5",
-    header: "font-mono py-1 px-2 text-lg 2xl:text-xl border-b border-green-900 bg-green-900/5",
+    header: "font-mono pt-1 lg:pb-1 px-2 text-lg 2xl:text-xl lg:border-b border-green-900 lg:bg-green-900/5",
     effects: "hover:opacity-50 transition-all duration-300 hover:antialiased",
   };
 

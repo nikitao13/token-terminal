@@ -65,8 +65,8 @@ function LpFeed() {
 
   const tableStyles = {
     container:
-      "overflow-hidden text-green-500 py-0 border-t lg:border-l lg:border-b mt-0 lg:mt-2 border-green-900 bg-black lg:bg-green-900/5 flex flex-col lg:flex-row font-mono h-[55vh] lg:h-[80vh] 2xl:h-[60vh]",
-    th: "py-2 lg:py-3 px-0.5 font-medium text-green-500 uppercase tracking-wider pl-2 2xl:pl-3 bg-green-900/25 2xl:py-2.5 lg:opacity-100 opacity-85",
+      "overflow-hidden text-green-500 py-0 border-t lg:border-l lg:border-b mt-0 lg:mt-2 border-green-900 bg-black lg:bg-green-900/5 flex flex-col lg:flex-row font-mono h-[48vh] lg:h-[80vh] 2xl:h-[60vh]",
+    th: "py-2 lg:py-3 px-0.5 font-medium text-green-500 uppercase tracking-wider pl-2 2xl:pl-3 bg-green-900/5 2xl:py-2.5 lg:opacity-100 opacity-85",
     td: "py-2 px-0.5 whitespace-nowrap transition-color duration-600 text-[0.7rem] lg:text-[0.8rem] 2xl:text-[0.9rem] pl-2 xl:pl-3",
     purple: "text-purple-600",
     tableWrapper:
@@ -78,7 +78,7 @@ function LpFeed() {
       <div className={tableStyles.tableWrapper}>
         <table className="min-w-full divide-y divide-gray-700 ml-0">
           <thead>
-            <tr className="text-left text-xs 2xl:text-sm">
+            <tr className="text-left text-[0.85rem] 2xl:text-sm">
               <th className={tableStyles.th}>
                 New Liquidity Pools<span className={tableStyles.purple}>~</span>
               </th>
