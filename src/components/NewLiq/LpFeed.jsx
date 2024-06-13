@@ -25,7 +25,17 @@ function LpFeed() {
     const socketInstance = getSocket();
 
     socketInstance.on("new_lp_pair", (data) => {
-      setLpPairs((prevPairs) => [data, ...prevPairs]);
+      const localTime = new Date(data.utcTime).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      });
+
+      setLpPairs((prevPairs) => [
+        { time: localTime, newLpPair: data.newLpPair },
+        ...prevPairs
+      ]);
       console.log("new lp found!");
     });
 

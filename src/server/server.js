@@ -86,13 +86,13 @@ async function fetchRaydiumMints(txId, connection) {
 
     if (newLpPair) {
       const now = new Date();
-      const time = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+      const utcTime = now.toISOString(); 
       console.log("\nnew LP found");
       let logObject = {};
-      logObject[time] = newLpPair;
+      logObject[utcTime] = newLpPair;
       console.table(logObject);
 
-      io.emit("new_lp_pair", { time, newLpPair });
+      io.emit("new_lp_pair", { utcTime, newLpPair });
     }
   } catch (error) {
     console.log("Error fetching transaction:", txId);
