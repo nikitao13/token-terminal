@@ -5,7 +5,7 @@ const SOL_ADDRESS = "So11111111111111111111111111111111111111112";
 
 export default async function fetchTokenData(addresses) {
   try {
-    console.log("http request!");
+    console.log("https request!");
     const addressString = addresses.join(",");
     const result = await axios.get(`${dexscreenerUrl}/${addressString}`);
 
