@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-    plugins: [react()]
+    plugins: [react()],
+    server: {
+      port: mode === "development" ? 3001 : 3002
+    }
   };
 });
