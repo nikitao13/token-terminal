@@ -6,7 +6,6 @@ import fs from "fs";
 import { Server } from "socket.io";
 import { MongoClient } from "mongodb";
 import {
-  PORT,
   RPC_URL,
   WSS_URL,
   RAYDIUM_PROGRAM_ID,

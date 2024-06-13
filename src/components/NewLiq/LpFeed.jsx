@@ -33,10 +33,15 @@ function LpFeed() {
         hour12: false
       });
 
-      setLpPairs((prevPairs) => [
-        { time: localTime, newLpPair: data.newLpPair },
-        ...prevPairs
-      ]);
+      setLpPairs((prevPairs) => {
+        const isDuplicate = prevPairs.some(
+          (pair) => pair.newLpPair === data.newLpPair
+        );
+        if (isDuplicate) {
+          return prevPairs;
+        }
+        return [{ time: localTime, newLpPair: data.newLpPair }, ...prevPairs];
+      });
     });
 
     socketInstance.on("initial_lp_pairs", (data) => {
