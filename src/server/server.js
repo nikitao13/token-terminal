@@ -1,6 +1,7 @@
 // WEBSOCKET SERVER
 // listening for new Raydium V4 liquidity pool program logs on the Solana Blockchain
-import http from "http";
+import https from "https";
+import fs from "fs";
 import { Server } from "socket.io";
 import {
   PORT,
@@ -23,7 +24,12 @@ let retryDelay = 500;
 let logsSubscriptionId = null;
 let isShuttingDown = false;
 
-const server = http.createServer();
+const options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/zk13.xyz/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/zk13.xyz/fullchain.pem')
+};
+
+const server = https.createServer(options);
 const io = new Server(server, {
   cors: {
     origin: process.env.CORS_ORIGIN || "*",
