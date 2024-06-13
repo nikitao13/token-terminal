@@ -5,7 +5,7 @@ let socket;
 
 const url = {
   local: "http://localhost:3001",
-  prod: "https://zk13.xyz:3001"
+  prod: "wss://zk13.xyz:3001"  
 };
 
 function getSocket() {
