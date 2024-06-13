@@ -3,6 +3,7 @@
 import https from "https";
 import fs from "fs";
 import { Server } from "socket.io";
+import { MongoClient } from "mongodb";
 import {
   PORT,
   RPC_URL,
@@ -11,7 +12,10 @@ import {
   INSTRUCTION_NAME,
   SOLANA_TOKEN_ADDRESS,
   TOKEN_A_INDEX,
-  TOKEN_B_INDEX
+  TOKEN_B_INDEX,
+  MONGO_URI,
+  DB_NAME,
+  COLLECTION_NAME
 } from "./config/config.js";
 import { Connection } from "@solana/web3.js";
 
@@ -19,20 +23,26 @@ const connection = new Connection(RPC_URL, {
   wsEndpoint: WSS_URL
 });
 
+const client = new MongoClient(MONGO_URI);
+await client.connect();
+const db = client.db(DB_NAME);
+const collection = db.collection(COLLECTION_NAME);
+console.log("MongoDB initialized");
+
 let lastProcessedSignature = null;
 let retryDelay = 500;
 let logsSubscriptionId = null;
 let isShuttingDown = false;
 
 const options = {
-  key: fs.readFileSync('/etc/letsencrypt/live/zk13.xyz/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/zk13.xyz/fullchain.pem')
+  key: fs.readFileSync("/etc/letsencrypt/live/zk13.xyz/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/zk13.xyz/fullchain.pem")
 };
 
 const server = https.createServer(options);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN || "*",
+    origin: process.env.CORS_ORIGIN || "*"
   }
 });
 
@@ -86,11 +96,25 @@ async function fetchRaydiumMints(txId, connection) {
 
     if (newLpPair) {
       const now = new Date();
-      const utcTime = now.toISOString(); 
+      const utcTime = now.toISOString();
       console.log("\nnew LP found");
       let logObject = {};
       logObject[utcTime] = newLpPair;
       console.table(logObject);
+
+      await collection.insertOne({ utcTime, newLpPair });
+
+      const count = await collection.countDocuments();
+      if (count > 15) {
+        const oldest = await collection
+          .find()
+          .sort({ utcTime: 1 })
+          .limit(1)
+          .toArray();
+        if (oldest.length > 0) {
+          await collection.deleteOne({ _id: oldest[0]._id });
+        }
+      }
 
       io.emit("new_lp_pair", { utcTime, newLpPair });
     }
@@ -119,6 +143,17 @@ async function handleRetry(txId, connection) {
   }, delay);
 }
 
+io.on("connection", async (socket) => {
+  console.log("client connected");
+
+  const latestLps = await collection
+    .find()
+    .sort({ utcTime: -1 })
+    .limit(15)
+    .toArray();
+  socket.emit("initial_lp_pairs", latestLps);
+});
+
 function shutdown() {
   if (isShuttingDown) return;
   isShuttingDown = true;
@@ -129,7 +164,10 @@ function shutdown() {
   }
   server.close(() => {
     console.log("Server closed");
-    process.exit(0);
+    client.close(() => {
+      console.log("MongoDB connection closed");
+      process.exit(0);
+    });
   });
 }
 

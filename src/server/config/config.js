@@ -11,3 +11,6 @@ export const INSTRUCTION_NAME = 'initialize2';
 export const SOLANA_TOKEN_ADDRESS = 'So11111111111111111111111111111111111111112';
 export const TOKEN_A_INDEX = 8;
 export const TOKEN_B_INDEX = 9;
+export const MONGO_URI = process.env.MONGO_URI;
+export const DB_NAME = process.env.DB_NAME;
+export const COLLECTION_NAME = process.env.COLLECTION_NAME;

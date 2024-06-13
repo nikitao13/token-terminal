@@ -11,8 +11,7 @@ const url = {
 function getSocket() {
   if (!socket) {
     socket = io(url.prod, {
-      transports: ["websocket"],
-      secure: true
+      transports: ["websocket"]
     });
   }
   return socket;
@@ -38,10 +37,24 @@ function LpFeed() {
       ]);
     });
 
+    socketInstance.on("initial_lp_pairs", (data) => {
+      const formattedData = data.map(({ utcTime, newLpPair }) => ({
+        time: new Date(utcTime).toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false
+        }),
+        newLpPair
+      }));
+      setLpPairs(formattedData);
+    });
+
     return () => {
       socketInstance.off("new_lp_pair");
+      socketInstance.off("initial_lp_pairs");
     };
-  }, [lpPairs]);
+  }, []);
 
   const tableStyles = {
     container:
