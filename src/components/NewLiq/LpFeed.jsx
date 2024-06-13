@@ -9,8 +9,10 @@ const url = {
 };
 
 function getSocket() {
+  const socketUrl =
+    process.env.NODE_ENV === "production" ? url.prod : url.local;
   if (!socket) {
-    socket = io(url.prod, {
+    socket = io(socketUrl, {
       transports: ["websocket"]
     });
   }

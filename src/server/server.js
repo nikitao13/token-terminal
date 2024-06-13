@@ -1,6 +1,7 @@
 // WEBSOCKET SERVER
 // listening for new Raydium V4 liquidity pool program logs on the Solana Blockchain
 import https from "https";
+import http from 'http';
 import fs from "fs";
 import { Server } from "socket.io";
 import { MongoClient } from "mongodb";
@@ -34,12 +35,20 @@ let retryDelay = 500;
 let logsSubscriptionId = null;
 let isShuttingDown = false;
 
-const options = {
-  key: fs.readFileSync("/etc/letsencrypt/live/zk13.xyz/privkey.pem"),
-  cert: fs.readFileSync("/etc/letsencrypt/live/zk13.xyz/fullchain.pem")
-};
+let server;
 
-const server = https.createServer(options);
+if (process.env.NODE_ENV === 'production') {
+  console.log("Running in PRODUCTION");
+  const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/zk13.xyz/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/zk13.xyz/fullchain.pem')
+  };
+  server = https.createServer(options);
+} else {
+  console.log("Running in DEVELOPMENT");
+  server = http.createServer();
+}
+
 const io = new Server(server, {
   cors: {
     origin: process.env.CORS_ORIGIN || "*"
