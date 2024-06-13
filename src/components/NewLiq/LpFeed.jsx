@@ -25,7 +25,6 @@ function LpFeed() {
     const socketInstance = getSocket();
 
     socketInstance.on("new_lp_pair", (data) => {
-      console.log("received new_lp_pair event with data:", data); // Debug log
       const localTime = new Date(data.utcTime).toLocaleTimeString("en-GB", {
         hour: "2-digit",
         minute: "2-digit",
@@ -37,7 +36,6 @@ function LpFeed() {
         { time: localTime, newLpPair: data.newLpPair },
         ...prevPairs
       ]);
-      console.log("updated lpPairs:", lpPairs);
     });
 
     return () => {

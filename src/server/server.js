@@ -93,7 +93,6 @@ async function fetchRaydiumMints(txId, connection) {
       console.table(logObject);
 
       io.emit("new_lp_pair", { utcTime, newLpPair });
-      console.log("emitted new_lp_pair event with data:", { utcTime, newLpPair });
     }
   } catch (error) {
     console.log("Error fetching transaction:", txId);
