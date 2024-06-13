@@ -1,7 +1,7 @@
 // WEBSOCKET SERVER
 // listening for new Raydium V4 liquidity pool program logs on the Solana Blockchain
 import https from "https";
-import http from 'http';
+import http from "http";
 import fs from "fs";
 import { Server } from "socket.io";
 import { MongoClient } from "mongodb";
@@ -54,6 +54,8 @@ const io = new Server(server, {
     origin: process.env.CORS_ORIGIN || "*"
   }
 });
+
+const port = process.env.NODE_ENV === "production" ? 3002 : 3001;
 
 async function startConnection(connection, programAddress, searchInstruction) {
   console.log(
@@ -189,6 +191,6 @@ startConnection(connection, RAYDIUM_PROGRAM_ID, INSTRUCTION_NAME).catch(
   console.error
 );
 
-server.listen(PORT, () => {
-  console.log(`WebSocket server listening on port ${PORT}`);
+server.listen(port, () => {
+  console.log(`WebSocket server listening on port ${port}`);
 });
