@@ -6,11 +6,11 @@ let socket;
 const url = {
   local: "http://localhost:3001",
   prod: "https://zk13.xyz:3001"
-}
+};
 
 function getSocket() {
   if (!socket) {
-    socket = io(url.prod);
+    socket = io(url.prod, { secure: true });
   }
   return socket;
 }
