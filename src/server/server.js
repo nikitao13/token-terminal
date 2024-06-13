@@ -78,7 +78,7 @@ async function fetchRaydiumMints(txId, connection) {
     );
 
     if (!instruction) {
-      console.log("No instruction found in the transaction.");
+      console.log("no instruction found in the transaction.");
       return;
     }
 
@@ -119,7 +119,7 @@ async function fetchRaydiumMints(txId, connection) {
       io.emit("new_lp_pair", { utcTime, newLpPair });
     }
   } catch (error) {
-    console.log("Error fetching transaction:", txId);
+    console.log("error fetching transaction:", txId);
     console.log(error.message);
     handleRetry(txId, connection);
   }
@@ -129,7 +129,7 @@ async function handleRetry(txId, connection) {
   if (isShuttingDown) return;
 
   console.log(
-    `Server responded with 429 Too Many Requests. Retrying after ${retryDelay}ms delay...`
+    `server responded with 429 Too Many Requests. Retrying after ${retryDelay}ms delay...`
   );
   const delay = retryDelay + Math.random() * 1000;
   setTimeout(async () => {
@@ -144,7 +144,9 @@ async function handleRetry(txId, connection) {
 }
 
 io.on("connection", async (socket) => {
-  console.log("client connected");
+  console.log(
+    `client connected: ${socket.id} from ${socket.handshake.headers.origin}`
+  );
 
   const latestLps = await collection
     .find()
@@ -158,12 +160,12 @@ function shutdown() {
   if (isShuttingDown) return;
   isShuttingDown = true;
 
-  console.log("Shutting down...");
+  console.log("shutting down...");
   if (logsSubscriptionId) {
     connection.removeOnLogsListener(logsSubscriptionId);
   }
   server.close(() => {
-    console.log("Server closed");
+    console.log("server closed");
     client.close(() => {
       console.log("MongoDB connection closed");
       process.exit(0);
