@@ -70,11 +70,12 @@ function LpFeed() {
     td: "py-2 px-0.5 whitespace-nowrap transition-color duration-600 text-[0.7rem] lg:text-[0.8rem] 2xl:text-[0.9rem] pl-2 xl:pl-3",
     purple: "text-purple-600",
     tableWrapper:
-      "w-full scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent overflow-y-auto smooth-scroll"
+      "w-full scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent overflow-y-auto smooth-scroll",
+    xxlBorders: "xxl:border-r border-green-900"
   };
 
   return (
-    <div className={tableStyles.container}>
+    <div className={`${tableStyles.container} ${tableStyles.xxlBorders}`}>
       <div className={tableStyles.tableWrapper}>
         <table className="min-w-full divide-y divide-gray-700 ml-0">
           <thead>

@@ -13,14 +13,24 @@ function Nav({ toggleSearch, handleSort }) {
     container:
       "tracking-wide bg-green-900/5 font-mono text-sm flex flex-row lg:flex-col lg:mt-2 px-2 lg:pt-2 text-left lg:border-t lg:border-b border-green-900 w-full 2xl:w-[3vw] lg:w-[5vw] 2xl:h-[60vh] lg:h-[80vh]",
     scale: "active:scale-125",
-    heart: "active:text-purple-600 active:opacity-100 ml-1 lg:ml-0"
+    heart: "active:text-purple-600 active:opacity-100 ml-1 lg:ml-0",
+    xxlBorders: "xxl:border-l border-green-900"
   };
 
-  const { align, icons, text, effects, url, container, scale, heart } =
-    navStyles;
+  const {
+    align,
+    icons,
+    text,
+    effects,
+    url,
+    container,
+    scale,
+    heart,
+    xxlBorders
+  } = navStyles;
 
   return (
-    <nav className={container}>
+    <nav className={`${container} ${xxlBorders}`}>
       <a
         onClick={() => toggleSearch("add")}
         className={`${align} ${icons} ${effects} ${scale} mb-2`}

@@ -4,7 +4,11 @@ import tailwindScrollbar from "tailwind-scrollbar";
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {}
+    extend: {
+      screens: {
+        'xxl': '1600px',
+      },
+    },
   },
   plugins: [tailwindScrollbar({ nocompatible: true })]
 };
