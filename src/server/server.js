@@ -164,7 +164,7 @@ io.on("connection", async socket => {
   const latestLps = await collection
     .find()
     .sort({ utcTime: -1 })
-    .limit(15)
+    .limit(25)
     .toArray();
   socket.emit("initial_lp_pairs", latestLps);
 
