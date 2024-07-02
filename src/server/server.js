@@ -15,12 +15,12 @@ import {
   TOKEN_B_INDEX,
   MONGO_URI,
   DB_NAME,
-  COLLECTION_NAME
+  COLLECTION_NAME,
 } from "./config/config.js";
 import { Connection } from "@solana/web3.js";
 
 const connection = new Connection(RPC_URL, {
-  wsEndpoint: WSS_URL
+  wsEndpoint: WSS_URL,
 });
 
 const client = new MongoClient(MONGO_URI);
@@ -33,14 +33,15 @@ let lastProcessedSignature = null;
 let retryDelay = 500;
 let logsSubscriptionId = null;
 let isShuttingDown = false;
+let connectedUsers = 0;
 
 let server;
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   console.log("Running in PRODUCTION");
   const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/zk13.xyz/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/zk13.xyz/fullchain.pem')
+    key: fs.readFileSync("/etc/letsencrypt/live/zk13.xyz/privkey.pem"),
+    cert: fs.readFileSync("/etc/letsencrypt/live/zk13.xyz/fullchain.pem"),
   };
   server = https.createServer(options);
 } else {
@@ -50,8 +51,8 @@ if (process.env.NODE_ENV === 'production') {
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN || "*"
-  }
+    origin: process.env.CORS_ORIGIN || "*",
+  },
 });
 
 const port = process.env.NODE_ENV === "production" ? 3002 : 3001;
@@ -65,7 +66,7 @@ async function startConnection(connection, programAddress, searchInstruction) {
     programAddress,
     ({ logs, err, signature }) => {
       if (err) return;
-      if (logs && logs.some((log) => log.includes(searchInstruction))) {
+      if (logs && logs.some(log => log.includes(searchInstruction))) {
         if (signature !== lastProcessedSignature) {
           fetchRaydiumMints(signature, connection);
           lastProcessedSignature = signature;
@@ -80,11 +81,11 @@ async function fetchRaydiumMints(txId, connection) {
   try {
     const tx = await connection.getParsedTransaction(txId, {
       maxSupportedTransactionVersion: 0,
-      commitment: "confirmed"
+      commitment: "confirmed",
     });
 
     const instruction = tx?.transaction.message.instructions.find(
-      (ix) => ix.programId.toBase58() === RAYDIUM_PROGRAM_ID.toBase58()
+      ix => ix.programId.toBase58() === RAYDIUM_PROGRAM_ID.toBase58()
     );
 
     if (!instruction) {
@@ -153,10 +154,12 @@ async function handleRetry(txId, connection) {
   }, delay);
 }
 
-io.on("connection", async (socket) => {
+io.on("connection", async socket => {
+  connectedUsers++;
   console.log(
-    `client connected: ${socket.id} from ${socket.handshake.headers.origin}`
+    `New client connected: ${socket.id} from ${socket.handshake.headers.origin}`
   );
+  console.log(`Total connected users: ${connectedUsers}`);
 
   const latestLps = await collection
     .find()
@@ -164,6 +167,12 @@ io.on("connection", async (socket) => {
     .limit(15)
     .toArray();
   socket.emit("initial_lp_pairs", latestLps);
+
+  socket.on("disconnect", () => {
+    connectedUsers--;
+    console.log(`Client disconnected: ${socket.id}`);
+    console.log(`Total connected users: ${connectedUsers}`);
+  });
 });
 
 function shutdown() {
